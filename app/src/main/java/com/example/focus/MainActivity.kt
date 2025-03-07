@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -60,11 +61,22 @@ class MainActivity : ComponentActivity() {
                         LoginScreen(
                             onNavigateToSecond = {
                                 navController.navigate("second")
+                            },
+                            onNavigateToBlueprint = {
+                                navController.navigate("blueprint")
                             }
                         )
                     }
                     composable("second") {
                         SecondScreen(
+                            onBackClick = {
+                                navController.popBackStack()
+                            }
+                        )
+                    }
+
+                    composable("blueprint"){
+                        Blueprint(
                             onBackClick = {
                                 navController.popBackStack()
                             }
@@ -104,7 +116,7 @@ fun FullScreenCard(
 }
 
 @Composable
-fun LoginScreen(onNavigateToSecond: () -> Unit) {
+fun LoginScreen(onNavigateToSecond: () -> Unit , onNavigateToBlueprint:()-> Unit) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
             modifier = Modifier
@@ -115,7 +127,8 @@ fun LoginScreen(onNavigateToSecond: () -> Unit) {
                 LoginContent(
                     title = "Focus",
                     description = "Inicio de sesion",
-                    onNavigateClick = onNavigateToSecond
+                    onNavigateClick = onNavigateToSecond,
+                    onNavigateToBlueprint = onNavigateToBlueprint
                 )
             }
         }
@@ -123,7 +136,7 @@ fun LoginScreen(onNavigateToSecond: () -> Unit) {
 }
 
 @Composable
-fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit) {
+fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit ,onNavigateToBlueprint:()-> Unit ) {
     var localTitle by remember { mutableStateOf("hola") }
     var localDescription by remember { mutableStateOf(description) }
 
@@ -131,13 +144,15 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
         text = title,
         fontWeight = FontWeight.Bold,
         style = MaterialTheme.typography.titleMedium,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        fontSize = 50.sp
     )
 
     Text(
         text = description,
         style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier.padding(top = 8.dp)
+        modifier = Modifier.padding(top = 8.dp),
+        fontSize = 25.sp
     )
 
     OutlinedTextField(
@@ -151,11 +166,11 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
 
     Row(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth()  // Puedes mantenerlo o quitarlo dependiendo de tus necesidades
             .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.Center,  // Esto centrará los elementos
+        verticalAlignment = Alignment.CenterVertically  // Asegura alineación vertical
     ) {
-
         IconButton(
             onClick = onNavigateClick,
             modifier = Modifier.size(48.dp)
@@ -163,20 +178,20 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
             Image(
                 painter = painterResource(id = R.drawable.user),
                 contentDescription = "Navegar a segunda pantalla",
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(80.dp)  // Nota: este tamaño es mayor que el área clickeable
             )
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(24.dp))  // Aumenté el espacio para separar más los iconos
 
         IconButton(
-            onClick = onNavigateClick,
+            onClick = onNavigateToBlueprint,
             modifier = Modifier.size(48.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.bluprint),
                 contentDescription = "Navegar a segunda pantalla",
-                modifier = Modifier.size(32.dp)
+                modifier = Modifier.size(80.dp)
             )
         }
     }
@@ -235,16 +250,40 @@ fun SecondScreen(onBackClick: () -> Unit) {
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
-fun LoginScreenPreview() {
-    FocusTheme {
-        FullScreenCard {
-            LoginContent(
-                "Android",
-                "Descripción de prueba",
-                onNavigateClick = {}
-            )
+fun Blueprint(onBackClick: () -> Unit){
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            FullScreenCard {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Segunda Pantalla",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontSize = 100.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = onBackClick,
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text("Returnal")
+                    }
+                }
+            }
         }
     }
+
 }
+
