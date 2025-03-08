@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,6 +44,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.focus.ui.theme.FocusTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -140,6 +142,12 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
     var localTitle by remember { mutableStateOf("hola") }
     var localDescription by remember { mutableStateOf(description) }
 
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+
+
     Text(
         text = title,
         fontWeight = FontWeight.Bold,
@@ -155,49 +163,57 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
         fontSize = 25.sp
     )
 
-    OutlinedTextField(
-        value = localTitle,
-        onValueChange = { localTitle = it },
-        label = { Text("Título") },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    )
+//    OutlinedTextField(
+//        value = localTitle,
+//        onValueChange = { localTitle = it },
+//        label = { Text("Título") },
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp)
+//    )
 
+
+        Spacer(modifier = Modifier.weight(1f))
     Row(
         modifier = Modifier
             .fillMaxWidth()  // Puedes mantenerlo o quitarlo dependiendo de tus necesidades
             .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.Center,  // Esto centrará los elementos
-        verticalAlignment = Alignment.CenterVertically  // Asegura alineación vertical
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
             onClick = onNavigateClick,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(90.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.user),
                 contentDescription = "Navegar a segunda pantalla",
-                modifier = Modifier.size(80.dp)  // Nota: este tamaño es mayor que el área clickeable
+                modifier = Modifier.size(100.dp)  // Nota: este tamaño es mayor que el área clickeable
             )
         }
 
-        Spacer(modifier = Modifier.width(24.dp))  // Aumenté el espacio para separar más los iconos
+        Spacer(modifier = Modifier.width(100.dp))  // Aumenté el espacio para separar más los iconos
 
         IconButton(
             onClick = onNavigateToBlueprint,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(90.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.bluprint),
                 contentDescription = "Navegar a segunda pantalla",
-                modifier = Modifier.size(80.dp)
+                modifier = Modifier.size(100.dp)
             )
         }
+
+
     }
 
+        Spacer(modifier = Modifier.weight(1f))
     RoundedButton(onClick = onNavigateClick)
 }
+}
+
+
 
 @Composable
 fun RoundedButton(onClick: () -> Unit) {
