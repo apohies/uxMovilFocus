@@ -1,5 +1,6 @@
 package com.example.focus
 
+import CustomModal
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -34,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -62,10 +65,10 @@ class MainActivity : ComponentActivity() {
                     composable("main") {
                         LoginScreen(
                             onNavigateToSecond = {
-                                navController.navigate("second")
+                                navController.navigate("register")
                             },
                             onNavigateToBlueprint = {
-                                navController.navigate("blueprint")
+                                navController.navigate("register")
                             }
                         )
                     }
@@ -83,6 +86,30 @@ class MainActivity : ComponentActivity() {
                                 navController.popBackStack()
                             }
                         )
+                    }
+
+                    composable("register") {
+                        Register(onClick = {
+                            navController.navigate("registerBlueprint")
+
+                        }, onBackClick = {
+                            navController.popBackStack()
+                        })
+
+                    }
+
+                    composable("registerBlueprint")
+                    {
+                        RegisterBlueprint(onClick = {
+                            navController.navigate("main")
+
+                        })
+                    }
+
+
+                    composable("registerConfirmation"){
+
+                        RegisterConfirmation()
                     }
                 }
             }
@@ -139,8 +166,7 @@ fun LoginScreen(onNavigateToSecond: () -> Unit , onNavigateToBlueprint:()-> Unit
 
 @Composable
 fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit ,onNavigateToBlueprint:()-> Unit ) {
-    var localTitle by remember { mutableStateOf("hola") }
-    var localDescription by remember { mutableStateOf(description) }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -163,14 +189,7 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
         fontSize = 25.sp
     )
 
-//    OutlinedTextField(
-//        value = localTitle,
-//        onValueChange = { localTitle = it },
-//        label = { Text("Título") },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 8.dp)
-//    )
+
 
 
         Spacer(modifier = Modifier.weight(1f))
@@ -186,20 +205,20 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
             modifier = Modifier.size(90.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.user),
+                painter = painterResource(id = R.drawable.bluprint),
                 contentDescription = "Navegar a segunda pantalla",
-                modifier = Modifier.size(100.dp)  // Nota: este tamaño es mayor que el área clickeable
+                modifier = Modifier.size(100.dp)
             )
         }
 
-        Spacer(modifier = Modifier.width(100.dp))  // Aumenté el espacio para separar más los iconos
+        Spacer(modifier = Modifier.width(100.dp))
 
         IconButton(
             onClick = onNavigateToBlueprint,
             modifier = Modifier.size(90.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.bluprint),
+                painter = painterResource(id = R.drawable.user),
                 contentDescription = "Navegar a segunda pantalla",
                 modifier = Modifier.size(100.dp)
             )
@@ -209,14 +228,26 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
     }
 
         Spacer(modifier = Modifier.weight(1f))
-    RoundedButton(onClick = onNavigateClick)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            RoundedButton(onClick = onNavigateClick,"Registro",false)
+            Spacer(modifier = Modifier.width(100.dp))
+            RoundedButton(onClick = onNavigateClick,"Inicio",true)
+        }
+
 }
 }
 
 
 
 @Composable
-fun RoundedButton(onClick: () -> Unit) {
+fun RoundedButton(onClick: () -> Unit , title: String , color : Boolean) {
     Button(
         onClick = onClick,
         modifier = Modifier
@@ -224,13 +255,15 @@ fun RoundedButton(onClick: () -> Unit) {
             .padding(vertical = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor =  if (color)  { Color(0xFF0B6DA2)} else {Color(0xFF3A5A40) } ,
             contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = "Aceptar")
+        Text(text = title)
     }
 }
+
+
 
 @Composable
 fun SecondScreen(onBackClick: () -> Unit) {
@@ -301,5 +334,239 @@ fun Blueprint(onBackClick: () -> Unit){
         }
     }
 
+}
+
+@Composable
+fun Register(onClick: () -> Unit ,onBackClick: () -> Unit)
+{
+    var localTitle = "user"
+
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+            FullScreenCard {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    //verticalArrangement = Arrangement.Center
+                ) {
+
+                    Text(
+                        text = "Focus",
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                        fontSize = 50.sp
+                    )
+
+                    Text(
+                        text = "Registro Usuario",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 8.dp),
+                        fontSize = 25.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    OutlinedTextField(
+                            value = "ma.moreno2",
+                            onValueChange = { localTitle = it },
+                            label = { Text("usuario") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        )
+                    Spacer(modifier = Modifier.height(24.dp))
+
+
+                    OutlinedTextField(
+                        value = "Miguel Angel Moreno",
+                        onValueChange = { localTitle = it },
+                        label = { Text("Nombres") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+
+                    OutlinedTextField(
+                        value = "ma.moreno2@uniandes.edu.co",
+                        onValueChange = { localTitle = it },
+                        label = { Text("Email") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(
+                            onClick = onClick,
+                            modifier = Modifier.size(90.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.bluprint),
+                                contentDescription = "Navegar a segunda pantalla",
+                                modifier = Modifier.size(100.dp)
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(100.dp))
+
+                        IconButton(
+                            onClick = onBackClick,
+                            modifier = Modifier.size(90.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.user),
+                                contentDescription = "Navegar a segunda pantalla",
+                                modifier = Modifier.size(100.dp)
+                            )
+                        }
+
+
+                    }
+
+
+
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun RegisterBlueprint(onClick: () -> Unit){
+    val showModal = remember { mutableStateOf(false) }
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+        }
+        FullScreenCard {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                //verticalArrangement = Arrangement.Center
+            ) {
+
+                Text(
+                    text = "Focus",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    fontSize = 50.sp
+                )
+
+                Text(
+                    text = "Registro Usuario",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 8.dp),
+                    fontSize = 25.sp
+                )
+
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.blueprinu),
+                        contentDescription = "Descripcion",
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(120.dp)
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    RoundedButton(
+                        onClick = { showModal.value = true },
+                        title = "Registro",
+                        color = true
+                    )
+
+                }
+
+                if (showModal.value) {
+                    CustomModal(
+                        onDismiss = { showModal.value = false },
+                        onConfirm = {
+
+                            showModal.value = false
+                            onClick()
+                        },
+                        title = "Usuario Creado",
+                        message = "Felicidades tu cuenta ha sido creada en pocos minutos recibiras una notificacion via mail",
+                        confirmText = "Aceptar",
+                        dismissText = "Cancelar"
+                    )
+
+                }
+
+
+
+
+            }
+        }
+
+
+    }
+}
+
+
+@Composable
+fun RegisterConfirmation(){
+
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+        ) {
+        }
+        FullScreenCard {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                //verticalArrangement = Arrangement.Center
+            ) {
+
+                Text(
+                    text = "Focus",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    fontSize = 50.sp
+                )
+
+
+
+
+            }
+        }
+
+
+    }
 }
 
