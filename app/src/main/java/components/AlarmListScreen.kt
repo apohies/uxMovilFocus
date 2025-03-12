@@ -108,25 +108,7 @@ fun AlarmListScreen() {
             }
         }
 
-        // Botón flotante en la esquina inferior derecha
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-        ) {
-            FloatingActionButton(
-                onClick = { /* TODO: Añadir nueva alarma */ },
-                containerColor = Color(0xFF87CEEB),
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Text(
-                    text = "S",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            }
-        }
+
 
         // Botón "+" en la esquina inferior derecha (según la imagen)
         Box(
