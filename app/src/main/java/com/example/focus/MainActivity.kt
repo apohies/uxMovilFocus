@@ -9,7 +9,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +46,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.focus.ui.theme.FocusTheme
+import components.AccountLogin
+import components.BlueprintLogin
+import components.Dashboard
+import components.RegisterPassword
 
 
 class MainActivity : ComponentActivity() {
@@ -64,11 +67,15 @@ class MainActivity : ComponentActivity() {
                 ) {
                     composable("main") {
                         LoginScreen(
-                            onNavigateToSecond = {
+                            onNavigateToRegister = {
                                 navController.navigate("register")
                             },
                             onNavigateToBlueprint = {
-                                navController.navigate("register")
+                                navController.navigate("blueprintlogin")
+                            },
+
+                            onNavigatetoAccount = {
+                                navController.navigate("accountlogin")
                             }
                         )
                     }
@@ -92,7 +99,12 @@ class MainActivity : ComponentActivity() {
                         Register(onClick = {
                             navController.navigate("registerBlueprint")
 
-                        }, onBackClick = {
+                        },
+                            onregisterEmail = {
+                                navController.navigate("registrerEmail")
+
+                            },
+                            onBackClick = {
                             navController.popBackStack()
                         })
 
@@ -111,6 +123,45 @@ class MainActivity : ComponentActivity() {
 
                         RegisterConfirmation()
                     }
+
+                    composable("registrerEmail")
+                    {
+                        RegisterPassword(onClick = {
+                            navController.navigate("main")
+
+                        }, onBackClick = {
+                            navController.popBackStack()
+                        }
+                        )
+                    }
+
+                    composable("blueprintlogin"){
+
+                        BlueprintLogin(onClick = {
+                            navController.navigate("dashboard")
+
+                        })
+
+                    }
+
+                    composable("accountlogin"){
+
+                        AccountLogin(onClick = {
+                            navController.navigate("dashboard")
+
+                        }, onBackClick = {
+                            navController.popBackStack()
+                        }
+                        )
+                    }
+
+                    composable("dashboard"){
+                        Dashboard()
+                    }
+
+
+
+
                 }
             }
         }
@@ -145,7 +196,7 @@ fun FullScreenCard(
 }
 
 @Composable
-fun LoginScreen(onNavigateToSecond: () -> Unit , onNavigateToBlueprint:()-> Unit) {
+fun LoginScreen(onNavigateToRegister: () -> Unit , onNavigateToBlueprint:()-> Unit , onNavigatetoAccount: ()-> Unit) {
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
             modifier = Modifier
@@ -156,8 +207,9 @@ fun LoginScreen(onNavigateToSecond: () -> Unit , onNavigateToBlueprint:()-> Unit
                 LoginContent(
                     title = "Focus",
                     description = "Inicio de sesion",
-                    onNavigateClick = onNavigateToSecond,
-                    onNavigateToBlueprint = onNavigateToBlueprint
+                    onNavigateClick = onNavigateToRegister,
+                    onNavigateToBlueprint = onNavigateToBlueprint,
+                    onNavigatetoAccount = onNavigatetoAccount
                 )
             }
         }
@@ -165,7 +217,7 @@ fun LoginScreen(onNavigateToSecond: () -> Unit , onNavigateToBlueprint:()-> Unit
 }
 
 @Composable
-fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit ,onNavigateToBlueprint:()-> Unit ) {
+fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit ,onNavigateToBlueprint:()-> Unit , onNavigatetoAccount: ()-> Unit ) {
 
 
     Column(
@@ -201,7 +253,7 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = onNavigateClick,
+            onClick = onNavigateToBlueprint,
             modifier = Modifier.size(90.dp)
         ) {
             Image(
@@ -214,7 +266,7 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
         Spacer(modifier = Modifier.width(100.dp))
 
         IconButton(
-            onClick = onNavigateToBlueprint,
+            onClick = onNavigatetoAccount,
             modifier = Modifier.size(90.dp)
         ) {
             Image(
@@ -337,7 +389,7 @@ fun Blueprint(onBackClick: () -> Unit){
 }
 
 @Composable
-fun Register(onClick: () -> Unit ,onBackClick: () -> Unit)
+fun Register(onClick: () -> Unit , onregisterEmail :() -> Unit,onBackClick: () -> Unit)
 {
     var localTitle = "user"
 
@@ -425,7 +477,7 @@ fun Register(onClick: () -> Unit ,onBackClick: () -> Unit)
                         Spacer(modifier = Modifier.width(100.dp))
 
                         IconButton(
-                            onClick = onBackClick,
+                            onClick = onregisterEmail,
                             modifier = Modifier.size(90.dp)
                         ) {
                             Image(
@@ -559,10 +611,6 @@ fun RegisterConfirmation(){
                     textAlign = TextAlign.Center,
                     fontSize = 50.sp
                 )
-
-
-
-
             }
         }
 
