@@ -50,6 +50,7 @@ import components.AccountLogin
 import components.BlueprintLogin
 import components.CreateAlarm
 import components.Dashboard
+import components.LocationScreen
 import components.RegisterPassword
 
 
@@ -168,8 +169,23 @@ class MainActivity : ComponentActivity() {
 
                         }, onAceptar = {
                             navController.popBackStack()
-                        })
+                        }, onLocation ={
+                            navController.navigate("locationScreen")
+                        }
+                        )
                     }
+
+                    composable("locationScreen"){
+                        LocationScreen(onCancelar = {
+                            navController.popBackStack()
+
+                        }, onInicio = {
+                            navController.popBackStack()
+                        })
+
+
+                    }
+
 
 
 

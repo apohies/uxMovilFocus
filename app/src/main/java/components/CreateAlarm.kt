@@ -26,7 +26,8 @@ import com.example.focus.FullScreenCard
 @Composable
 fun CreateAlarm(
     onCancelar: () -> Unit,
-    onAceptar: () -> Unit
+    onAceptar: () -> Unit,
+    onLocation:() -> Unit
 ) {
     var descripcion by remember { mutableStateOf("") }
     var isOneTime by remember { mutableStateOf(true) }
@@ -37,6 +38,9 @@ fun CreateAlarm(
 
     var showDaysPicker by remember { mutableStateOf(false) }
     var selectedDays by remember { mutableStateOf<List<String>>(emptyList()) }
+
+    val showAddItemModal = remember { mutableStateOf(false) }
+    val itemsList = remember { mutableStateListOf<String>() }
 
 
     FullScreenCard {
@@ -170,7 +174,7 @@ fun CreateAlarm(
                     modifier = Modifier
                         .size(24.dp)
                         .background(Color.Green, CircleShape)
-                        .clickable { showTimePicker = true }
+                        .clickable { onLocation() }
                 )
             }
 
@@ -199,7 +203,7 @@ fun CreateAlarm(
                     modifier = Modifier
                         .size(24.dp)
                         .background(Color.Green, CircleShape)
-                        .clickable { /* Abrir lista de items */ }
+                        .clickable { showAddItemModal.value = true }
                 )
             }
 
@@ -322,6 +326,14 @@ fun CreateAlarm(
                 onDismiss = { showDaysPicker = false },
                 onDaysSelected = { days ->
                     selectedDays = days
+                }
+            )
+
+            AddItemModal(
+                isVisible = showAddItemModal.value,
+                onDismiss = { showAddItemModal.value = false },
+                onAddItem = { newItem ->
+                    itemsList.add(newItem)
                 }
             )
 
