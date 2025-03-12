@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun AlarmListScreen() {
+fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
     val alarms = remember {
         listOf(
             AlarmItem("Droguería", "10:40 AM"),
@@ -63,19 +63,27 @@ fun AlarmListScreen() {
                     horizontalArrangement = Arrangement.SpaceBetween, // Distribuye los elementos a los extremos
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Icono de lista en la esquina izquierda
+
                     Icon(
                         imageVector = Icons.Default.List,
                         contentDescription = "Lista",
                         modifier = Modifier.size(24.dp)
                     )
 
-                    // Círculo verde en la esquina derecha
+
                     Box(
                         modifier = Modifier
                             .size(24.dp)
                             .background(Color.Green, shape = CircleShape)
-                    )
+                            .clickable {
+
+                                onNavigateToCreateAlarm()
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        // Opcionalmente puedes añadir algún icono o indicador visual
+                        // que muestre que es clickable
+                    }
                 }
             }
 

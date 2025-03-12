@@ -48,6 +48,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.focus.ui.theme.FocusTheme
 import components.AccountLogin
 import components.BlueprintLogin
+import components.CreateAlarm
 import components.Dashboard
 import components.RegisterPassword
 
@@ -156,7 +157,18 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("dashboard"){
-                        Dashboard()
+                        Dashboard(onNavigateToCreateAlarm={
+                            navController.navigate("createAlarm")
+                        })
+                    }
+
+                    composable("createAlarm"){
+                        CreateAlarm(onCancelar = {
+                            navController.navigate("dashboard")
+
+                        }, onAceptar = {
+                            navController.popBackStack()
+                        })
                     }
 
 
