@@ -29,17 +29,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
@@ -50,6 +47,7 @@ import components.AccountLogin
 import components.BlueprintLogin
 import components.CreateAlarm
 import components.Dashboard
+import components.EditAlarm
 import components.LocationScreen
 import components.RegisterPassword
 
@@ -160,7 +158,10 @@ class MainActivity : ComponentActivity() {
                     composable("dashboard"){
                         Dashboard(onNavigateToCreateAlarm={
                             navController.navigate("createAlarm")
-                        })
+                        },
+                            onedit = {
+                                navController.navigate("editAlarm")
+                            })
                     }
 
                     composable("createAlarm"){
@@ -183,6 +184,19 @@ class MainActivity : ComponentActivity() {
                             navController.popBackStack()
                         })
 
+
+                    }
+
+                    composable("editAlarm"){
+                        EditAlarm(onCancelar = {
+                            navController.navigate("dashboard")
+
+                        }, onAceptar = {
+                            navController.popBackStack()
+                        }, onLocation ={
+                            navController.navigate("locationScreen")
+                        }
+                        )
 
                     }
 
@@ -209,7 +223,7 @@ fun FullScreenCard(
             defaultElevation = 4.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = Color(0xFFF9F8F2)
         )
     ) {
         Column(
@@ -275,7 +289,7 @@ fun LoginContent(title: String, description: String, onNavigateClick: () -> Unit
         Spacer(modifier = Modifier.weight(1f))
     Row(
         modifier = Modifier
-            .fillMaxWidth()  // Puedes mantenerlo o quitarlo dependiendo de tus necesidades
+            .fillMaxWidth()
             .padding(vertical = 16.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically

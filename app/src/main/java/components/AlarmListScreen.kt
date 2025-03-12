@@ -19,10 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+
 
 @Composable
-fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
+fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit) {
     val alarms = remember {
         listOf(
             AlarmItem("Droguería", "10:40 AM"),
@@ -38,7 +38,6 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Título principal
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -47,7 +46,7 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
             }
 
 
-            // Fila con iconos distribuidos en extremos
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -60,7 +59,7 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween, // Distribuye los elementos a los extremos
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -81,13 +80,12 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
                             },
                         contentAlignment = Alignment.Center
                     ) {
-                        // Opcionalmente puedes añadir algún icono o indicador visual
-                        // que muestre que es clickable
+
                     }
                 }
             }
 
-            // Tarjeta principal con las alarmas
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,7 +106,7 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
                         AlarmCard(
                             title = alarm.title,
                             description = alarm.time,
-                            onEditClick = { /* TODO: Editar alarma */ },
+                            onEditClick = { onedit() },
                             onDeleteClick = { /* TODO: Eliminar alarma */ }
                         )
                     }
@@ -118,7 +116,7 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit) {
 
 
 
-        // Botón "+" en la esquina inferior derecha (según la imagen)
+
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -161,7 +159,7 @@ fun AlarmCard(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // Información de la alarma
+
             Column {
                 Text(
                     text = title,
@@ -174,11 +172,11 @@ fun AlarmCard(
                 )
             }
 
-            // Botones de acción
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                // Botón de editar (amarillo)
+
                 Box(
                     modifier = Modifier
                         .size(32.dp)
@@ -194,7 +192,7 @@ fun AlarmCard(
                     )
                 }
 
-                // Botón de eliminar (rojo)
+
                 Box(
                     modifier = Modifier
                         .size(32.dp)

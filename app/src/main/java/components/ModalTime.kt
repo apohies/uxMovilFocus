@@ -95,10 +95,7 @@ fun TimePickerModal(
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Enter time",
-                            modifier = Modifier.padding(bottom = 16.dp)
-                        )
+
 
                         // Selector de hora
                         Row(

@@ -1,4 +1,5 @@
 package components
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -24,7 +25,7 @@ import com.example.focus.FullScreenCard
 
 
 @Composable
-fun CreateAlarm(
+fun EditAlarm(
     onCancelar: () -> Unit,
     onAceptar: () -> Unit,
     onLocation:() -> Unit
@@ -40,12 +41,10 @@ fun CreateAlarm(
     var selectedDays by remember { mutableStateOf<List<String>>(emptyList()) }
 
     val showAddItemModal = remember { mutableStateOf(false) }
-    val showEditItemModal = remember { mutableStateOf(false) }
-
-    val showDeleteItemModal = remember { mutableStateOf(false) }
     val itemsList = remember { mutableStateListOf<String>() }
 
-
+    val showDeleteItemModal = remember { mutableStateOf(false) }
+    val showEditItemModal = remember { mutableStateOf(false) }
 
 
     FullScreenCard {
@@ -53,7 +52,7 @@ fun CreateAlarm(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
 
-        ) {
+            ) {
 
             Text(
                 text = "Focus",
@@ -64,7 +63,7 @@ fun CreateAlarm(
             )
 
             Text(
-                text = "Creación Alarma",
+                text = "Editar Alarma",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(vertical = 16.dp)
@@ -239,12 +238,12 @@ fun CreateAlarm(
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-
+                        // Botón editar (amarillo)
                         Box(
                             modifier = Modifier
                                 .size(32.dp)
                                 .background(Color.Yellow, CircleShape)
-                                .clickable { showEditItemModal.value = true },
+                                .clickable { /* Editar */ },
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -260,7 +259,7 @@ fun CreateAlarm(
                             modifier = Modifier
                                 .size(32.dp)
                                 .background(Color.Red, CircleShape)
-                                .clickable { showDeleteItemModal.value = true},
+                                .clickable { showDeleteItemModal.value = true },
                             contentAlignment = Alignment.Center
                         ) {
                             Icon(
@@ -358,8 +357,6 @@ fun CreateAlarm(
                     showDeleteItemModal.value = false
                 }
             )
-
-
 
         }
 

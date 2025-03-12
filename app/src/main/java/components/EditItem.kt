@@ -1,3 +1,5 @@
+
+
 package components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,7 +23,7 @@ import androidx.compose.ui.window.DialogProperties
 
 
 @Composable
-fun AddItemModal(
+fun EditItemModal(
     isVisible: Boolean,
     onDismiss: () -> Unit,
     onAddItem: (String) -> Unit
@@ -61,7 +63,7 @@ fun AddItemModal(
 
                     // Título
                     Text(
-                        text = "Añadir Item",
+                        text = "Editar Item",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -91,7 +93,7 @@ fun AddItemModal(
                     ) {
                         // Campo de texto para item
                         OutlinedTextField(
-                            value = itemText,
+                            value = "pastillas",
                             onValueChange = { itemText = it },
                             label = { Text("Item") },
                             modifier = Modifier.fillMaxWidth(),
@@ -129,9 +131,11 @@ fun AddItemModal(
 
                     Button(
                         onClick = {
-
+                            if (itemText.isNotBlank()) {
+                                onAddItem(itemText)
+                                itemText = ""
                                 onDismiss()
-
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF0B6DA2) // Azul oscuro
@@ -148,44 +152,4 @@ fun AddItemModal(
     }
 }
 
-// Ejemplo de cómo usarlo
-@Composable
-fun UsageExample() {
-    val showAddItemModal = remember { mutableStateOf(false) }
-    val items = remember { mutableStateListOf<String>() }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Lista de items
-        LazyColumn(
-            modifier = Modifier.weight(1f)
-        ) {
-            items(items) { item ->
-                Text(
-                    text = item,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
-        }
-
-        // Botón para añadir item
-        Button(
-            onClick = { showAddItemModal.value = true },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text("Mostrar modal para añadir item")
-        }
-    }
-
-    // Modal para añadir item
-    AddItemModal(
-        isVisible = showAddItemModal.value,
-        onDismiss = { showAddItemModal.value = false },
-        onAddItem = { newItem ->
-            items.add(newItem)
-        }
-    )
-}

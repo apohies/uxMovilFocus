@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.focus.FullScreenCard
 
 @Composable
-fun Dashboard(onNavigateToCreateAlarm: () -> Unit){
+fun Dashboard(onNavigateToCreateAlarm: () -> Unit , onedit : ()-> Unit){
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
@@ -53,7 +53,7 @@ fun Dashboard(onNavigateToCreateAlarm: () -> Unit){
                     fontSize = 25.sp
                 )
 
-                AlarmListScreen(onNavigateToCreateAlarm)
+                AlarmListScreen(onNavigateToCreateAlarm,onedit)
 
 
 

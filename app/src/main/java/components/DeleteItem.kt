@@ -18,16 +18,13 @@ import androidx.compose.ui.unit.dp
 
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-
-
 @Composable
-fun AddItemModal(
+fun DeleteItemModal(
     isVisible: Boolean,
+    itemName: String,
     onDismiss: () -> Unit,
-    onAddItem: (String) -> Unit
+    onConfirmDelete: () -> Unit
 ) {
-    var itemText by remember { mutableStateOf("") }
-
     if (isVisible) {
         Dialog(
             onDismissRequest = onDismiss,
@@ -61,7 +58,7 @@ fun AddItemModal(
 
                     // Título
                     Text(
-                        text = "Añadir Item",
+                        text = "Eliminar Item",
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -76,35 +73,26 @@ fun AddItemModal(
                     )
                 }
 
-                // Contenido del modal
+                // Contenido del modal - Mensaje de confirmación
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    shape = RoundedCornerShape(8.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(24.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = Color.White
+                        containerColor = Color(0xFFF9F8F2) // Color beige claro
                     )
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        contentAlignment = Alignment.Center
                     ) {
-                        // Campo de texto para item
-                        OutlinedTextField(
-                            value = itemText,
-                            onValueChange = { itemText = it },
-                            label = { Text("Item") },
-                            modifier = Modifier.fillMaxWidth(),
-                            trailingIcon = {
-                                IconButton(onClick = { itemText = "" }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Close,
-                                        contentDescription = "Limpiar"
-                                    )
-                                }
-                            },
-                            singleLine = true,
-                            shape = RoundedCornerShape(8.dp)
+                        Text(
+                            text = "Realmente desea eliminar el item $itemName para la presión",
+                            style = MaterialTheme.typography.bodyLarge,
+
                         )
                     }
                 }
@@ -121,71 +109,24 @@ fun AddItemModal(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF3A5A40) // Verde oscuro
                         ),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(24.dp),
                         modifier = Modifier.width(120.dp)
                     ) {
                         Text("Cancelar")
                     }
 
                     Button(
-                        onClick = {
-
-                                onDismiss()
-
-                        },
+                        onClick = onConfirmDelete,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF0B6DA2) // Azul oscuro
                         ),
-                        shape = RoundedCornerShape(16.dp),
+                        shape = RoundedCornerShape(24.dp),
                         modifier = Modifier.width(120.dp)
                     ) {
                         Text("Inicio")
                     }
                 }
             }
-
         }
     }
-}
-
-// Ejemplo de cómo usarlo
-@Composable
-fun UsageExample() {
-    val showAddItemModal = remember { mutableStateOf(false) }
-    val items = remember { mutableStateListOf<String>() }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        // Lista de items
-        LazyColumn(
-            modifier = Modifier.weight(1f)
-        ) {
-            items(items) { item ->
-                Text(
-                    text = item,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
-        }
-
-        // Botón para añadir item
-        Button(
-            onClick = { showAddItemModal.value = true },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text("Mostrar modal para añadir item")
-        }
-    }
-
-    // Modal para añadir item
-    AddItemModal(
-        isVisible = showAddItemModal.value,
-        onDismiss = { showAddItemModal.value = false },
-        onAddItem = { newItem ->
-            items.add(newItem)
-        }
-    )
 }
