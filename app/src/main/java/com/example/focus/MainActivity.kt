@@ -29,8 +29,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,15 +43,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.focus.ui.theme.FocusTheme
 import components.AccountLogin
 import components.BlueprintLogin
+import components.ChangeBlueprint
+import components.ChangePassword
+import components.ConfiguracionRolesPermisosScreen
+import components.ConfiguracionScreen
 import components.CreateAlarm
 import components.Dashboard
 import components.EditAlarm
 import components.LocationScreen
 import components.RegisterPassword
+import components.SolicitudMetodoAccesoScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -161,7 +169,12 @@ class MainActivity : ComponentActivity() {
                         },
                             onedit = {
                                 navController.navigate("editAlarm")
-                            })
+                            },
+                            onconfig = {
+                                navController.navigate("configuration")
+                            }
+
+                        )
                     }
 
                     composable("createAlarm"){
@@ -199,6 +212,68 @@ class MainActivity : ComponentActivity() {
                         )
 
                     }
+
+                    composable("configuration"){
+                        ConfiguracionScreen(
+                            onRolesPermisosClick = {
+                                    navController.navigate("role")
+                            },
+                            onSolicitudMetodoAccesoClick = {
+                                navController.navigate("method")
+                            },
+                            onBackClick = {
+
+                                navController.navigate("dashboard")
+                            }
+                        )
+
+                    }
+
+                    composable("role"){
+
+                        ConfiguracionRolesPermisosScreen(
+                            onCancelarClick = {
+                                navController.popBackStack()
+                            },
+
+                            onNavigateToInicio ={
+                                navController.navigate("dashboard")
+                            })
+                    }
+
+
+                    composable("method"){
+
+                        SolicitudMetodoAccesoScreen(
+                            onCancelarClick ={
+
+                            },
+                            onHuellaSelected={
+                                navController.navigate("ChangeBlue")
+                            },
+                            onCuentaContraseñaSelected ={
+                                navController.navigate("changePass")
+                            }
+                        )
+                    }
+
+                    composable("changePass"){
+
+                        ChangePassword(onClick ={
+                            navController.navigate("dashboard")
+                        },
+                            onBackClick ={
+                                navController.navigate("dashboard")
+                            })
+                    }
+
+                    composable("ChangeBlue"){
+                        ChangeBlueprint(onClick ={
+                            navController.navigate("dashboard")
+                        })
+                    }
+
+
 
 
 
@@ -434,6 +509,9 @@ fun Blueprint(onBackClick: () -> Unit){
 fun Register(onClick: () -> Unit , onregisterEmail :() -> Unit,onBackClick: () -> Unit)
 {
     var localTitle = "user"
+    var username by remember { mutableStateOf("ma.moreno2") }
+    var fullName by remember { mutableStateOf("Miguel Angel Moreno") }
+    var email by remember { mutableStateOf("ma.moreno2@uniandes.edu.co") }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
@@ -466,8 +544,8 @@ fun Register(onClick: () -> Unit , onregisterEmail :() -> Unit,onBackClick: () -
                     Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedTextField(
-                            value = "ma.moreno2",
-                            onValueChange = { localTitle = it },
+                            value = username,
+                            onValueChange = { username = it  },
                             label = { Text("usuario") },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -477,8 +555,8 @@ fun Register(onClick: () -> Unit , onregisterEmail :() -> Unit,onBackClick: () -
 
 
                     OutlinedTextField(
-                        value = "Miguel Angel Moreno",
-                        onValueChange = { localTitle = it },
+                        value = fullName,
+                        onValueChange = { fullName = it },
                         label = { Text("Nombres") },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -490,8 +568,8 @@ fun Register(onClick: () -> Unit , onregisterEmail :() -> Unit,onBackClick: () -
 
 
                     OutlinedTextField(
-                        value = "ma.moreno2@uniandes.edu.co",
-                        onValueChange = { localTitle = it },
+                        value = email,
+                        onValueChange = { email = it },
                         label = { Text("Email") },
                         modifier = Modifier
                             .fillMaxWidth()

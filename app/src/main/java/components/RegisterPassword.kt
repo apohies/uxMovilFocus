@@ -19,8 +19,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -36,6 +38,8 @@ fun RegisterPassword(onClick: () -> Unit ,onBackClick: () -> Unit)
 {
     var localTitle = "user"
     val showModal = remember { mutableStateOf(false) }
+    var email by remember { mutableStateOf("ma.moreno2@uniandes.edu.co") }
+    var password by remember { mutableStateOf("**********") }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Box(
@@ -70,8 +74,8 @@ fun RegisterPassword(onClick: () -> Unit ,onBackClick: () -> Unit)
                     Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedTextField(
-                        value = "ma.moreno2@uniandes.edu.co",
-                        onValueChange = { localTitle = it },
+                        value = email,
+                        onValueChange = { email = it },
                         label = { Text("Email") },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -85,8 +89,8 @@ fun RegisterPassword(onClick: () -> Unit ,onBackClick: () -> Unit)
 
 
                     OutlinedTextField(
-                        value = "**********",
-                        onValueChange = { localTitle = it },
+                        value = password,
+                        onValueChange = { password = it },
                         label = { Text("password") },
                         modifier = Modifier
                             .fillMaxWidth()

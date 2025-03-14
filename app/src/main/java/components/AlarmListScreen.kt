@@ -13,7 +13,10 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +25,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit) {
+fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit,onconfig : ()-> Unit) {
     val alarms = remember {
         listOf(
             AlarmItem("Droguería", "10:40 AM"),
@@ -31,6 +34,9 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit) {
             AlarmItem("Droguería", "10:40 AM")
         )
     }
+
+    var showDeleteAlarmDialog by remember { mutableStateOf(false) }
+    var selectedAlarm by remember { mutableStateOf("Droguería") }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -63,11 +69,19 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    Icon(
-                        imageVector = Icons.Default.List,
-                        contentDescription = "Lista",
-                        modifier = Modifier.size(24.dp)
-                    )
+                    IconButton(
+                        onClick = {
+
+                            onconfig()
+                        },
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.List,
+                            contentDescription = "Ir a Configuración",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
 
 
                     Box(
@@ -107,7 +121,7 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit) {
                             title = alarm.title,
                             description = alarm.time,
                             onEditClick = { onedit() },
-                            onDeleteClick = { /* TODO: Eliminar alarma */ }
+                            onDeleteClick = { showDeleteAlarmDialog = true }
                         )
                     }
                 }
@@ -117,24 +131,34 @@ fun AlarmListScreen(onNavigateToCreateAlarm: () -> Unit , onedit :()-> Unit) {
 
 
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(end = 16.dp, bottom = 72.dp)
-        ) {
-            FloatingActionButton(
-                onClick = { /* TODO: Acción adicional */ },
-                containerColor = Color.DarkGray,
-                contentColor = Color.White,
-                shape = CircleShape,
-                modifier = Modifier.size(40.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Añadir"
-                )
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.BottomEnd)
+//                .padding(end = 16.dp, bottom = 72.dp)
+//        ) {
+//            FloatingActionButton(
+//                onClick = {  },
+//                containerColor = Color.DarkGray,
+//                contentColor = Color.White,
+//                shape = CircleShape,
+//                modifier = Modifier.size(40.dp)
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.Add,
+//                    contentDescription = "Añadir"
+//                )
+//            }
+//        }
+
+        DeleteAlarmModal(
+            isVisible = showDeleteAlarmDialog,
+            alarmName = selectedAlarm,
+            onDismiss = { showDeleteAlarmDialog = false },
+            onConfirm = {
+
+                showDeleteAlarmDialog = false
             }
-        }
+        )
     }
 }
 
